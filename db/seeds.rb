@@ -5,6 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require "net/http"
+require "uri"
 
 
 5.times do 
@@ -13,12 +15,16 @@
 end
 
 10.times do
-    address = "#{rand(1..500)} #{["Broadway", "Park", "Main", "Oak", "Pine"].sample}, New York, NY"
+    address = "#{rand(1..500)} #{["Broadway", "Park", "Main", "Oak", "Pine"].sample}, NY"
+    uri = URI.parse("https://api.mapbox.com/geocoding/v5/mapbox.places/#{URI.escape(address)}.json?access_token=pk.eyJ1IjoibWlsZGx5Y29uZnVzZWQiLCJhIjoiY2swODY0bzJkMGZzdzNpbWpldjY3ZTc3bSJ9.WnQy5HIIT_vWw_eyYOPaLA")
+    response = Net::HTTP.get_response(uri)
+    body = JSON.parse(response.body)
+    coords = body["features"][0]["center"].inspect.remove("[").remove("]")
     capacity = rand(1..3)
     name = "#{Faker::Restaurant.name}'s #{Faker::Restaurant.type}"
     price = rand(0..10)
     rating = rand(1..5)
-    Location.create(address: address, capacity: capacity, name: name, price: price, rating: rating)
+    Location.create(address: address, capacity: capacity, name: name, price: price, rating: rating, coords: coords)
 end
 
 20.times do
