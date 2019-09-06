@@ -15,7 +15,7 @@ end
 10.times do
     address = "#{rand(1..500)} #{["Broadway", "Park", "Main", "Oak", "Pine"].sample}, New York, NY"
     capacity = rand(1..3)
-    name = "#{Faker::Company.name} #{Faker::Company.suffix}"
+    name = "#{Faker::Restaurant.name}'s #{Faker::Restaurant.type}"
     price = rand(0..10)
     rating = rand(1..5)
     Location.create(address: address, capacity: capacity, name: name, price: price, rating: rating)
