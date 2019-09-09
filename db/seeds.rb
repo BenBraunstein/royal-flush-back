@@ -16,7 +16,7 @@ end
 
 10.times do
     address = "#{rand(1..500)} #{["Broadway", "Park", "Main", "Oak", "Pine"].sample}, NY"
-    uri = URI.parse("https://api.mapbox.com/geocoding/v5/mapbox.places/#{URI.escape(address)}.json?access_token=pk.eyJ1IjoibWlsZGx5Y29uZnVzZWQiLCJhIjoiY2swODY0bzJkMGZzdzNpbWpldjY3ZTc3bSJ9.WnQy5HIIT_vWw_eyYOPaLA")
+    uri = URI.parse("https://api.mapbox.com/geocoding/v5/mapbox.places/#{URI.escape(address)}.json?access_token=#{ENV['MAPBOX_API_KEY']}")
     response = Net::HTTP.get_response(uri)
     body = JSON.parse(response.body)
     coords = body["features"][0]["center"].inspect.remove("[").remove("]")
