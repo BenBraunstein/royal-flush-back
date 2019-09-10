@@ -16,7 +16,10 @@ class AuthController < ApplicationController
         if token != "undefined"
             user_id = JWT.decode(token, ENV["JWT_SECRET"])[0]["userId"]
             user = User.find(user_id)
-            render json: user
+            render json: {
+                user: user,
+                user_duties: user.duties.uniq {|duty| duty.location}
+            }
         else
             render json: {errors: "Invalid username, password combo"}
         end
