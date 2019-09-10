@@ -8,8 +8,14 @@ class LocationsController < ApplicationController
     end
 
     def create 
+        require "net/http"
+        require "uri"
+        uri = URI.parse("https://api.mapbox.com/geocoding/v5/mapbox.places/#{URI.escape(params[:address])}.json?access_token=#{ENV['MAPBOX_API_KEY']}")
+        response = Net::HTTP.get_response(uri)
+        body = JSON.parse(response.body)
+        coords = body["features"][0]["center"].inspect.remove("[").remove("]")
         location = Location.create(strong_location_params)
-        location.update(rating:1)
+        location.update(rating:1, coords: coords)
         render :json => location
     end
 

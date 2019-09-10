@@ -3,7 +3,10 @@ class UsersController < ApplicationController
         user = User.create(strong_user_params)
         user.update(password: params[:password])
         user.update(rating: 1)
-        render :json => user
+        render json: {
+         username: user.username,
+         token: JWT.encode({ userId: user.id }, ENV["JWT_SECRET"]),
+       }
     end
 
     private
