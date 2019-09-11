@@ -4,7 +4,7 @@ class LocationsController < ApplicationController
         lat = request.headers['Latitude'].to_f
         long = request.headers['Longitude'].to_f
         sorted_locations = locations.sort_by {|location| Math.sqrt((lat - location.coords.split[1][0..-1].to_f)**2 + (long - location.coords.split[0][0..-2].to_f)**2)}
-        render :json => sorted_locations[0..10]
+        render :json => sorted_locations[0..9]
     end
 
     def create 
@@ -17,6 +17,7 @@ class LocationsController < ApplicationController
         location = Location.create(strong_location_params)
         location.update(rating:1, coords: coords)
         render :json => location
+        # self.index
     end
 
     private
